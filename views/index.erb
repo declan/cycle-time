@@ -59,7 +59,7 @@ var min = Infinity,
     max = -Infinity;
 	
 // parse in the data	
-d3.csv("data.csv", function(error, csv) {
+d3.csv("sprint-2019-01-09.csv", function(error, csv) {
 	// using an array of arrays with
 	// data[n][2] 
 	// where n = number of columns in the csv file 
@@ -74,10 +74,10 @@ d3.csv("data.csv", function(error, csv) {
 	// add more rows if your csv file has more columns
 
 	// add here the header of the csv file
-	data[0][0] = "Q1";
-	data[1][0] = "Q2";
-	data[2][0] = "Q3";
-	data[3][0] = "Q4";
+	data[0][0] = "Development";
+	data[1][0] = "Review";
+	data[2][0] = "Testing";
+	data[3][0] = "Accepted";
 	// add more rows if your csv file has more columns
 
 	data[0][1] = [];
@@ -86,10 +86,10 @@ d3.csv("data.csv", function(error, csv) {
 	data[3][1] = [];
   
 	csv.forEach(function(x) {
-		var v1 = Math.floor(x.Q1),
-			v2 = Math.floor(x.Q2),
-			v3 = Math.floor(x.Q3),
-			v4 = Math.floor(x.Q4);
+		var v1 = Math.floor(x.dev),
+			v2 = Math.floor(x.review),
+			v3 = Math.floor(x.qa),
+			v4 = Math.floor(x.accepted);
 			// add more variables if your csv file has more columns
 			
 		var rowMax = Math.max(v1, Math.max(v2, Math.max(v3,v4)));
@@ -151,7 +151,7 @@ d3.csv("data.csv", function(error, csv) {
         .attr("text-anchor", "middle")  
         .style("font-size", "18px") 
         //.style("text-decoration", "underline")  
-        .text("Cycle Time");
+        .text("Cycle Time, Mobile Sprint January 9th");
  
 	 // draw y axis
 	svg.append("g")

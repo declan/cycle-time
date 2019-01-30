@@ -23,7 +23,6 @@ body {
 }
 
 .box .outlier {
-  fill: none;
   stroke: #000;
 }
 
@@ -44,12 +43,24 @@ body {
   shape-rendering: crispEdges;
 }
 
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    padding: 10px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    opacity: 0;
+}
+
 </style>
 <body>
+<div class="tooltip"></div>
 <script src="https://d3js.org/d3.v3.min.js"></script>
 <script src="box.js"></script>
 <script>
-var labels = true; // show the text labels beside individual boxplots?
+var labels = false; // show the text labels beside individual boxplots?
 
 var margin = {top: 30, right: 50, bottom: 70, left: 50};
 var  width = 800 - margin.left - margin.right;
@@ -73,6 +84,13 @@ d3.csv("sprint-2019-01-09.csv", function(error, csv) {
 	data[3] = [];
 	// add more rows if your csv file has more columns
 
+  window._urls = {
+   "Development": {},
+   "Review": {},
+   "Testing": {},
+   "Accepted": {}
+  }
+
 	// add here the header of the csv file
 	data[0][0] = "Development";
 	data[1][0] = "Review";
@@ -86,10 +104,10 @@ d3.csv("sprint-2019-01-09.csv", function(error, csv) {
 	data[3][1] = [];
   
 	csv.forEach(function(x) {
-		var v1 = Math.floor(x.dev),
-			v2 = Math.floor(x.review),
-			v3 = Math.floor(x.qa),
-			v4 = Math.floor(x.accepted);
+		var v1 = x.dev,
+			v2 = x.review,
+			v3 = x.qa,
+			v4 = x.accepted;
 			// add more variables if your csv file has more columns
 			
 		var rowMax = Math.max(v1, Math.max(v2, Math.max(v3,v4)));
@@ -100,6 +118,11 @@ d3.csv("sprint-2019-01-09.csv", function(error, csv) {
 		data[2][1].push(v3);
 		data[3][1].push(v4);
 		 // add more rows if your csv file has more columns
+
+     window._urls["Development"][v1] = x.url;
+     window._urls["Review"][v2]      = x.url;
+     window._urls["Testing"][v3]     = x.url;
+     window._urls["Accepted"][v4]    = x.url;
 		 
 		if (rowMax > max) max = rowMax;
 		if (rowMin < min) min = rowMin;	
@@ -120,7 +143,7 @@ d3.csv("sprint-2019-01-09.csv", function(error, csv) {
 	
 	// the x-axis
 	var x = d3.scale.ordinal()	   
-		.domain( data.map(function(d) { console.log(d); return d[0] } ) )	    
+		.domain( data.map(function(d) { return d[0] } ) )
 		.rangeRoundBands([0 , width], 0.7, 0.3); 		
 
 	var xAxis = d3.svg.axis()
@@ -194,3 +217,5 @@ function iqr(k) {
 }
 
 </script>
+
+</body>

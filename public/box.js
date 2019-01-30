@@ -167,12 +167,34 @@ d3.box = function() {
       var outlier = g.selectAll("circle.outlier")
           .data(outlierIndices, Number);
 
-      outlier.enter().insert("circle", "text")
+      var tooltip = d3.select("div.tooltip");
+      console.log(tooltip);
+
+      outlier.enter().insert("circle")
           .attr("class", "outlier")
           .attr("r", 5)
           .attr("cx", width / 2)
           .attr("cy", function(i) { return x0(d[i]); })
-          .style("opacity", 1e-6)
+          .style("opacity", 1)
+          .on("mouseover", function(i) {
+            var url = window._urls[data[0]][d[i]];
+            var slug = url.split('/')[url.split('/').length - 1];
+            tooltip.transition()
+                   .duration(200)
+                   .style("opacity", 0.9);
+            tooltip.html('<a target="_blank" href="' + url + '">' + slug + '</a>')
+                   .style("left", (d3.event.pageX + 15) + "px")
+                   .style("top",  (d3.event.pageY) + "px")
+                   .style("pointer-events", "all");
+          })
+          .on("mouseout", function(i) {
+            setTimeout(function() {
+              tooltip.transition()
+                     .duration(500)
+                     .style("opacity", 0)
+                     .style("pointer-events", "none");
+            }, 4000);
+          })
         .transition()
           .duration(duration)
           .attr("cy", function(i) { return x1(d[i]); })

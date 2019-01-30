@@ -1,7 +1,9 @@
-require 'sinatra'
+require 'sinatra/base'
 
-set :public_folder, File.dirname(__FILE__) + '/public'
+class CycleTimeApp < Sinatra::Base
+  set :public_folder, File.dirname(__FILE__) + '/public'
 
-get '/' do
-  erb :index
+  get '/' do
+    erb :index
+  end
 end
